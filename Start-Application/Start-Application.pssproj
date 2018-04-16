@@ -28,6 +28,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Runner.ps1" />
     <Compile Include="Start-Application.psd1" />
     <Compile Include="Start-Application.psm1" />
   </ItemGroup>
