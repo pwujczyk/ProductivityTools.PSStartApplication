@@ -15,7 +15,7 @@ function CreateFile([string]$configPath)
 <Applications>
   <Application>
     <Key>Notepad</Key>
-    <Description>Windows notepad</Description>
+    <Description>Windows Notepad</Description>
     <ProcessName>notepad</ProcessName>
     <ApplicationPath>C:\Windows\System32\notepad.exe</ApplicationPath>
     <AutoStart>0</AutoStart>
@@ -47,7 +47,7 @@ function WriteApplication($application)
 {
 	$consoleColor=$HOST.UI.RawUI.ForegroundColor 	
 	Write-Host $application.Key -ForegroundColor Red -NoNewline; 
-	Write-Host " - " -ForegroundColor Black -NoNewline; 
+	Write-Host " - " -ForegroundColor White -NoNewline; 
 	Write-Host $application.Description -ForegroundColor Green
 }
 
@@ -165,3 +165,14 @@ function Set-StartApplicationConfigurationPath
 	$configFile=Join-Path $Path $(GetConfigurationFileName)
 	Set-Configuration -Key $configurationKey -Value $configFile -Category $configurationCategory
 }
+
+function Get-StartApplicationConfigurationPath
+{
+	$configurationKey=Get-StartApplicationConfigurationKey
+	$r = Get-Configuration $configurationKey
+	return $r
+}
+
+Export-ModuleMember Set-StartApplicationConfigurationPath
+Export-ModuleMember Start-Application
+Export-ModuleMember Get-StartApplicationConfigurationPath
