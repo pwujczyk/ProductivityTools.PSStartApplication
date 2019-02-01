@@ -1,3 +1,9 @@
+function GetApplicationName()
+{
+	return "Start-Application"
+}
+
+
 function GetScriptPath()
 {
 	$path=$PSScriptRoot
@@ -27,7 +33,7 @@ function CreateFile([string]$configPath)
 function GetConfigurationFile()
 {
 	$configurationKey=Get-StartApplicationConfigurationKey
-	$configFile=Get-Configuration $configurationKey
+	$configFile=Get-MasterConfiguration $configurationKey -Application $(GetApplicationName)
 	if ($configFile -eq "" -or $configFile -eq $null)
 	{
 		$scriptPath=$(GetScriptPath) 
@@ -41,6 +47,13 @@ function GetConfigurationFile()
 	}
 	
 	return $configFile
+}
+
+function WriteConfigurationPath()
+{
+	$configPath=Get-StartApplicationConfigurationPath
+	Write-Verbose "Configuration path: [$configPath]"
+	Write-Verbose "If you want to change configuration path please setup it using Set-MasterConfiguration -Key '$(Get-StartApplicationConfigurationKey)' -Application '$(GetApplicationName)' -Value value"
 }
 
 function WriteApplication($application)
@@ -61,6 +74,7 @@ function GetApplicationList()
 
 function DisplayApplicationList()
 {
+	WriteConfigurationPath
 	$applicationList=GetApplicationList
 	foreach($application in $applicationList)
 	{
@@ -163,13 +177,13 @@ function Set-StartApplicationConfigurationPath
 	$configurationKey=Get-StartApplicationConfigurationKey
 	$configurationCategory=Get-StartApplicationConfigurationCategory
 	$configFile=Join-Path $Path $(GetConfigurationFileName)
-	Set-Configuration -Key $configurationKey -Value $configFile -Category $configurationCategory
+	Set-MasterConfiguration -Key $configurationKey -Value $configFile -Category $configurationCategory
 }
 
 function Get-StartApplicationConfigurationPath
 {
 	$configurationKey=Get-StartApplicationConfigurationKey
-	$r = Get-Configuration $configurationKey
+	$r = MasterConfiguration $configurationKey
 	return $r
 }
 
