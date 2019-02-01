@@ -164,10 +164,6 @@ function Get-StartApplicationConfigurationKey
 	return "StartAppplicationDirectory"
 }
 
-function Get-StartApplicationConfigurationCategory
-{
-	return "PSStartAppplication"
-}
 
 function Set-StartApplicationConfigurationPath
 {
@@ -175,9 +171,8 @@ function Set-StartApplicationConfigurationPath
 	param ([string]$Path)
 	
 	$configurationKey=Get-StartApplicationConfigurationKey
-	$configurationCategory=Get-StartApplicationConfigurationCategory
 	$configFile=Join-Path $Path $(GetConfigurationFileName)
-	Set-MasterConfiguration -Key $configurationKey -Value $configFile -Category $configurationCategory
+	Set-MasterConfiguration -Key $configurationKey -Value $configFile -Application $(GetApplicationName)
 }
 
 function Get-StartApplicationConfigurationPath
